@@ -26,15 +26,13 @@ public class Producto {
         return this.Nombre;
     }
 
+    public float getPrecio(){
+        return this.Precio;
+    }
+
     //Considero que esta función me ayudará a conseguir el total de productos
     public int total(){
         int total = (this.Vendidos + this.Disponible);
         return total;
-    }
-
-    //Calcular los precios
-    public float Ventas(){
-        float ventas = (this.Vendidos * this.Precio);
-        return ventas;
     }
 }

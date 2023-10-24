@@ -22,11 +22,34 @@ public class Inventario{
         
         //Segunda cosa que se debía de ver
         System.out.println("2. Productos por cada categoría es:\n");
-        for(Bebidas : beb){
-            for(int i=0; i < Bebidas.size(); i++){
-                System.out.println("Bebidas:\n");
-                System.out.println(i + 1 + ": " + beb.getNombre());
-            } 
+        for(int i=0; i < Bebidas.size(); i++){
+            System.out.println("Bebidas:\n");
+            System.out.println(i + 1 + ": " + Bebidas.getNombre(i));
         }
+        
+        for(int i=0; i < Bebidas.size(); i++){
+            System.out.println("Snacks:\n");
+            System.out.println(i + 1 + ": " + Snacks.getNombre(i));
+        }
+        
+        System.out.println("3. Total de ventas\n");
+        System.out.println("Se tuvieron unas ventas totales de: " + TotalVentas());
+
+    }
+
+    //Constructor para obtener el total de las ventas
+    public static float TotalVentas(){
+        float bebs;
+        float sna;
+
+        for(int i=0; i < Bebidas.size(); i++){
+            bebs = Bebidas.getPrecio(i);
+        }
+        for(int i=0; i < Snacks.size(); i++){
+            sna = Snacks.getPrecio(i);
+        }
+
+        float ventas = (bebs + sna);
+        return ventas;
     }
 }
