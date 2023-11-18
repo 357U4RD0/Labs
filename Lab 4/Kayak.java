@@ -7,8 +7,7 @@
 //No coloqué los getters en el análisis, porque creí que no los usaría. Pero es casi que esencial ponerlos.
 //Cambié usuarioActual de Usuario a Base.
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,13 +15,28 @@ import java.util.Scanner;
 public class Kayak {
     private static boolean sesionActiva = false;
     private static Base usuarioActual;
-    private static Premium UsuAct;
     private static List<Base> usuarios = new ArrayList<>();
-    private static List<Premium> prem = new ArrayList<>();
     private static Scanner scanner = new Scanner(System.in);
+    private static final String archivo = "usuarios.csv";
 
     public static void main(String[] args) {
+        cargarUsuarios();
         mostrarMenu();
+    }
+
+    private static void cargarUsuarios() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                String nombre = parts[0];
+                String contraseña = parts[1];
+                Base usuario = new Base(nombre, contraseña);
+                usuarios.add(usuario);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al cargar usuarios desde el archivo CSV: " + e.getMessage());
+        }
     }
 
     private static void mostrarMenu() {
@@ -55,35 +69,35 @@ public class Kayak {
                         iniciarSesion();
                     }
                     break;
+
                 case 2:
                     if (sesionActiva) {
                         usuarioActual.generarConfirmacion();
                     } else {
-                        System.out.println("Debes iniciar sesión para generar una confirmación.");
-                    }
-                    break;
-                case 3:
-                    if (sesionActiva) {
-                        usuarioActual.modificarPerfil();
-                    } else {
-                        System.out.println("Debes iniciar sesión para modificar tu perfil.");
-                    }
-                    break;
-                case 4:
-                    if (sesionActiva && usuarioActual instanceof Base) {
-                        cambiarPlan();
-                    } else {
                         Registro();
                     }
                     break;
-                case 5:
+
+                case 3:
+                    if (sesionActiva && usuarioActual instanceof Base) {
+                        usuarioActual.modificarPerfil();
+                    } else {
+                        System.out.println("\nExcelente desición, solo que para ser Premium debes de pagar $10000");
+                        System.out.println("Y como no creíamos que alguien lo fuese a hacer, no ha sido desarrollado");
+                        System.out.println("De igual manera, eres un grande 😎\n");
+                    }
+                    break;
+
+                case 4:
                     if (sesionActiva) {
                         cerrarSesion();
                     } else {
-                        System.out.println("¡Hasta pronto!");
+                        System.out.println("\n¡Adios!");
+                        System.out.println("Espero que tu uso del programa haya sido agradable\n");
                         System.exit(0);
                     }
                     break;
+
                 default:
                     System.out.println("Opción inválida. Por favor, elige una opción válida.");      
             
@@ -96,7 +110,7 @@ public class Kayak {
         String nombreUsuario = scanner.nextLine();
         System.out.print("Ingresa tu contraseña: ");
         String contraseña = scanner.nextLine();
-        
+
 
         for (Base usuario : usuarios) {
             if (usuario.getNombre().equals(nombreUsuario) && usuario.getContraseña().equals(contraseña)) {
@@ -111,9 +125,14 @@ public class Kayak {
     }
 
     private static void cerrarSesion() {
-        sesionActiva = false;
-        usuarioActual = null;
-        System.out.println("¡Cierre de sesión exitoso!");
+        if (sesionActiva){
+            sesionActiva = false;
+            usuarioActual = null;
+            System.out.println("¡Cierre de sesión exitoso!");
+        } else {
+            System.out.println("No hay ninguna sesión iniciada como para poder cerrarla");
+        }
+        
     }
 
     private static void Registro() {
@@ -127,20 +146,8 @@ public class Kayak {
         sesionActiva = true;
         usuarioActual = nuevoUsuario;
 
+        nuevoUsuario.Guardar();
+
         System.out.println("¡Registro exitoso como un nuevo usuario Base!");
-    }
-
-    private static void cambiarPlan() {
-        System.out.print("¿Estás seguro(a) de cambiar a plan Premium? (Si/No): ");
-        String respuesta = scanner.nextLine();
-        if (respuesta.equalsIgnoreCase("Si")) {
-            Premium nuevoPrem = new Premium(usuarioActual.getNombre(), usuarioActual.getContraseña());
-            usuarios.remove(usuarioActual);
-            prem.add(nuevoPrem);
-            UsuAct = nuevoPrem;
-
-            System.out.println("\n¡Muy bien!");
-            System.out.println("Has hecho una de las mejores desiciones de toda tu vida, no te arrepentirás 😉👍");
-        }
     }
 }

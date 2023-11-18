@@ -1,12 +1,12 @@
 public class Reserva {
     private String fecha;
-    private String tipoVuelo;
+    private boolean idaVuelta;
     private int cantidadBoletos;
     private String aerolinea;
 
-    public Reserva(String fecha, String tipoVuelo, int cantidadBoletos, String aerolinea) {
+    public Reserva(String fecha, boolean idaVuelta, int cantidadBoletos, String aerolinea) {
         this.fecha = fecha;
-        this.tipoVuelo = tipoVuelo;
+        this.idaVuelta = idaVuelta;
         this.cantidadBoletos = cantidadBoletos;
         this.aerolinea = aerolinea;
     }
