@@ -22,7 +22,7 @@ class Base implements Usuario {
             return;
         }
 
-        // Lógica para realizar una reserva
+        // Pendiente
     }
 
     @Override
@@ -32,7 +32,7 @@ class Base implements Usuario {
             return;
         }
 
-        // Lógica para generar una confirmación
+        // Pendiente
     }
 
     @Override
@@ -42,6 +42,14 @@ class Base implements Usuario {
             return;
         }
 
-        // Lógica para modificar el perfil de un usuario base
+        // Pendiente
+    }
+
+    public String getNombre(){
+        return this.nombre;
+    }
+
+    public String getContraseña(){
+        return this.contraseña;
     }
 }
